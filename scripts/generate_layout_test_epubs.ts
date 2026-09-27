@@ -7,7 +7,7 @@
 //   → test/epubs/ja_inline.epub   <hr> / <sup> / <sub> / CJK 間の半角スペース
 //   → test/epubs/ja_headings.epub h1〜h6 と本文の間のアキ
 //   → test/epubs/ja_pre.epub      コードブロック（枠・行間・br・ページまたぎ）
-//   → test/epubs/ja_aozora_ruby.epub 青空文庫の〔〕付きルビ（issue #154）
+//   → test/epubs/ja_aozora_ruby.epub 青空文庫の〔〕付きルビ（issue #154）。_vertical は同じ内容の縦書き
 //
 // ja_kinsoku.epub の各段落は約物を一定周期で含むので、1 行あたりの文字数が何文字でも
 // どこかの行で「行頭に約物が来る」状態が必ず発生する。修正前後の比較用。
@@ -499,4 +499,13 @@ await writeZip(
 await writeZip(
   `${repoRoot}/test/epubs/ja_aozora_ruby.epub`,
   buildEpub("青空文庫ルビ テスト", "aozora-ruby-test-0001", aozoraRubyChapters),
+);
+await writeZip(
+  `${repoRoot}/test/epubs/ja_aozora_ruby_vertical.epub`,
+  buildEpub(
+    "青空文庫ルビ テスト（縦書き）",
+    "aozora-ruby-test-0002",
+    aozoraRubyChapters,
+    "body { writing-mode: vertical-rl; }\n",
+  ),
 );
