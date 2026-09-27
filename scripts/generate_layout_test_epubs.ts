@@ -500,6 +500,7 @@ await writeZip(
   `${repoRoot}/test/epubs/ja_aozora_ruby.epub`,
   buildEpub("青空文庫ルビ テスト", "aozora-ruby-test-0001", aozoraRubyChapters),
 );
+// 縦書きはリーダーが spine の page-progression-direction="rtl" で判定するので、それも付ける
 await writeZip(
   `${repoRoot}/test/epubs/ja_aozora_ruby_vertical.epub`,
   buildEpub(
@@ -507,5 +508,14 @@ await writeZip(
     "aozora-ruby-test-0002",
     aozoraRubyChapters,
     "body { writing-mode: vertical-rl; }\n",
+  ).map((e) =>
+    e.name === "OEBPS/content.opf"
+      ? {
+        ...e,
+        data: new TextEncoder().encode(
+          new TextDecoder().decode(e.data).replace("<spine>", '<spine page-progression-direction="rtl">'),
+        ),
+      }
+      : e
   ),
 );
